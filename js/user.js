@@ -45,18 +45,17 @@ async function signup(evt) {
   const username = $("#signup-username").val();
   const password = $("#signup-password").val();
 
-  try {
+  
   // User.signup retrieves user info from API and returns User instance
   // which we'll make the globally-available, logged-in user.
   currentUser = await User.signup(username, password, name);
   
+  if (currentUser === null){
+    alert("Username already exists. Try another username");
+  } else {
     saveUserCredentialsInLocalStorage();
     updateUIOnUserLogin();
-
-  } catch (err) {
-    alert("Username already exists. Try another username");
-
-  }
+  } 
 
   $signupForm.trigger("reset");
 }
