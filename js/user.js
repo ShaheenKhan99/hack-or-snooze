@@ -17,14 +17,20 @@ async function login(evt) {
   const username = $("#login-username").val();
   const password = $("#login-password").val();
 
+  try {
   // User.login retrieves user info from API and returns User instance
   // which we'll make the globally-available, logged-in user.
   currentUser = await User.login(username, password);
 
-  $loginForm.trigger("reset");
+    saveUserCredentialsInLocalStorage();
+    updateUIOnUserLogin();
 
-  saveUserCredentialsInLocalStorage();
-  updateUIOnUserLogin();
+  } catch(error){
+    alert('Incorrect username or password. Please try again')
+
+  }
+
+  $loginForm.trigger("reset"); 
 }
 
 $loginForm.on("submit", login);
@@ -39,12 +45,18 @@ async function signup(evt) {
   const username = $("#signup-username").val();
   const password = $("#signup-password").val();
 
+  try {
   // User.signup retrieves user info from API and returns User instance
   // which we'll make the globally-available, logged-in user.
   currentUser = await User.signup(username, password, name);
+  
+    saveUserCredentialsInLocalStorage();
+    updateUIOnUserLogin();
 
-  saveUserCredentialsInLocalStorage();
-  updateUIOnUserLogin();
+  } catch (err) {
+    alert("Username already exists. Try another username");
+
+  }
 
   $signupForm.trigger("reset");
 }
@@ -117,4 +129,17 @@ function updateUIOnUserLogin() {
   $allStoriesList.show();
 
   updateNavOnLogin();
+  updateUserProfile();
 }
+
+/* Update the user profile with the current user's info **/
+
+function updateUserProfile() {
+  console.debug("updateUserProfile");
+
+  $("#user-profile-name").text(currentUser.name);
+  $("#user-profile-username").text(currentUser.username);
+  $("#user-profile-creation-date").text(currentUser.createdAt.slice(0, 10));
+}
+
+

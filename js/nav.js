@@ -43,6 +43,8 @@ function navMyStories(evt) {
 
 $body.on("click", "#nav-my-stories", navMyStories);
 
+
+
 /** Show login/signup on click on "login" */
 
 function navLoginClick(evt) {
@@ -53,6 +55,14 @@ function navLoginClick(evt) {
 }
 
 $navLogin.on("click", navLoginClick);
+
+function navUserProfileClick(evt) {
+  console.debug("navUserProfileClick");
+  hidePageComponents();
+  $userProfile.show();
+}
+
+$navUserProfile.on("click", navUserProfileClick);
 
 /** When a user first logins in, update the navbar to reflect that. */
 

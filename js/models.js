@@ -24,8 +24,6 @@ class Story {
   /** Parses hostname out of URL and returns it. */
 
   getHostName() {
-    // UNIMPLEMENTED: complete this function!
-    
     return new URL(this.url).host;
     
   }
@@ -52,8 +50,7 @@ class StoryList {
   static async getStories() {
     // Note presence of `static` keyword: this indicates that getStories is
     //  **not** an instance method. Rather, it is a method that is called on the
-    //  class directly. Why doesn't it make sense for getStories to be an
-    //  instance method?
+    //  class directly. 
 
     // query the /stories endpoint (no auth required)
     const response = await axios({
@@ -76,8 +73,6 @@ class StoryList {
    */
 
   async addStory( user, { title, author, url }) {
-    // UNIMPLEMENTED: complete this function!
-    
     const token = user.loginToken;
     const response = await axios({
       method: "POST",
@@ -182,6 +177,7 @@ class User {
    */
 
   static async login(username, password) {
+    try {
     const response = await axios({
       url: `${BASE_URL}/login`,
       method: "POST",
@@ -200,6 +196,10 @@ class User {
       },
       response.data.token
     );
+    } catch (err) {
+      console.error("loginUser failed", err);
+      return null;
+    }
   }
 
   /** When we already have credentials (token & username) for a user,
